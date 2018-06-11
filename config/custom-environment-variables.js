@@ -11,14 +11,5 @@ module.exports = {
                 "port": "SYS_REDIS_SENTINEL_PORT",
                 "name": "SYS_REDIS_SENTINEL_NAME"
             }
-        },
-    "Host":
-        {
-            "LBIP": "LB_FRONTEND",
-            "LBPort": "LB_PORT",
-            "Port": "HOST_ARDSLITESERVICE_PORT",
-            "Version": "HOST_VERSION",
-            "UseMsgQueue": "HOST_USE_MSG_QUEUE",
-            "UseDashboardMsgQueue": 'HOST_USE_DASHBOARD_MSG_QUEUE'
         }
 };
