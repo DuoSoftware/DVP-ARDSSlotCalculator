@@ -5,9 +5,9 @@ var SetArdsSlotCount = async () => {
     logger.info('++++++++++++++++++++++++ Start SetArdsSlotCount :: Time: ' + new Date().toISOString() + ' ++++++++++++++++++++++++');
 
     try {
-        let registerdMetaInfo = await redisHandler.GetAllRegisteredMetaInfo();
+        let registeredMetaInfo = await redisHandler.GetAllRegisteredMetaInfo();
 
-        for (let metaInfo of registerdMetaInfo.values()) {
+        for (let metaInfo of registeredMetaInfo.values()) {
 
             let queueDetails = await redisHandler.GetAllQueues(metaInfo.Tenant, metaInfo.Company);
             let totalQueueCount = queueDetails.TotalQueueCount;
