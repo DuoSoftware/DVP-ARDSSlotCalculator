@@ -136,7 +136,7 @@ let ScanAsync = (pattern) => {
 
 }
 
-module.exports.SetExecuteCount = async (queueId, count) => {
+let SetExecuteCount = async (queueId, count) => {
 
     try {
 
@@ -150,7 +150,7 @@ module.exports.SetExecuteCount = async (queueId, count) => {
 
 }
 
-module.exports.GetAllQueues = async (tenant, company) => {
+let GetAllQueues = async (tenant, company) => {
     try {
 
         let keyPattern = util.format('Queue:%s:%s:CALLSERVER:CALL:*', company, tenant);
@@ -181,7 +181,7 @@ module.exports.GetAllQueues = async (tenant, company) => {
     }
 }
 
-module.exports.GetAllRegisteredMetaInfo = async () => {
+let GetAllRegisteredMetaInfo = async () => {
 
     try {
 
@@ -206,3 +206,8 @@ module.exports.GetAllRegisteredMetaInfo = async () => {
     }
 
 }
+
+module.exports.ScanAsync = ScanAsync;
+module.exports.SetExecuteCount = SetExecuteCount;
+module.exports.GetAllQueues = GetAllQueues;
+module.exports.GetAllRegisteredMetaInfo = GetAllRegisteredMetaInfo;

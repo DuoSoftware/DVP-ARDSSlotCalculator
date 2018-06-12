@@ -1,5 +1,6 @@
 const redisHandler = require('./RedisHandler');
 const logger = require("dvp-common/LogHandler/CommonLogHandler.js").logger;
+var util = require('util');
 
 var SetArdsSlotCount = async () => {
     logger.info('++++++++++++++++++++++++ Start SetArdsSlotCount :: Time: ' + new Date().toISOString() + ' ++++++++++++++++++++++++');
@@ -9,6 +10,7 @@ var SetArdsSlotCount = async () => {
 
         for (let metaInfo of registeredMetaInfo.values()) {
 
+            let existingCountKeys = await redisHandler.ScanAsync(util.format('ExecCount:Queue:%s:%s:CALLSERVER:CALL:*', metaInfo.Company, metaInfo.Tenant));
             let queueDetails = await redisHandler.GetAllQueues(metaInfo.Tenant, metaInfo.Company);
             let totalQueueCount = queueDetails.TotalQueueCount;
 
@@ -25,19 +27,27 @@ var SetArdsSlotCount = async () => {
 
             }
 
-            for (let [queueId, queueRatio] of queueRatios.entries()) {
+            for(let execCountKey of existingCountKeys){
                 logger.info(`---------------------------------------------------------------`);
-                logger.info(`queueId:: ${queueId} ::: queueRatio:: ${queueRatio}`);
-                let queueMinRatio = queueRatio / minQueueRatio;
-                logger.info(`queueId:: ${queueId} ::: queueRatio:: ${queueMinRatio}`);
 
-                if (queueMinRatio > 20) {
-                    logger.info(`SetExecuteCount queueId:: ${queueId} :: count: 4 ::: Result:: ${await redisHandler.SetExecuteCount(queueId, 4)}`);
-                } else if (queueMinRatio > 10) {
-                    logger.info(`SetExecuteCount queueId:: ${queueId} :: count: 3 ::: Result:: ${await redisHandler.SetExecuteCount(queueId, 3)}`);
-                } else if (queueMinRatio > 5) {
-                    logger.info(`SetExecuteCount queueId:: ${queueId} :: count: 2 ::: Result:: ${await redisHandler.SetExecuteCount(queueId, 2)}`);
-                } else {
+                let queueId = execCountKey.split(':').slice(1).join(':');
+                if(queueRatios.has(queueId)){
+                    let queueRatio = queueRatios.get(queueId);
+
+                    logger.info(`queueId:: ${queueId} ::: queueRatio:: ${queueRatio}`);
+                    let queueMinRatio = queueRatio / minQueueRatio;
+                    logger.info(`queueId:: ${queueId} ::: queueRatio:: ${queueMinRatio}`);
+
+                    if (queueMinRatio > 20) {
+                        logger.info(`SetExecuteCount queueId:: ${queueId} :: count: 4 ::: Result:: ${await redisHandler.SetExecuteCount(queueId, 4)}`);
+                    } else if (queueMinRatio > 10) {
+                        logger.info(`SetExecuteCount queueId:: ${queueId} :: count: 3 ::: Result:: ${await redisHandler.SetExecuteCount(queueId, 3)}`);
+                    } else if (queueMinRatio > 5) {
+                        logger.info(`SetExecuteCount queueId:: ${queueId} :: count: 2 ::: Result:: ${await redisHandler.SetExecuteCount(queueId, 2)}`);
+                    } else {
+                        logger.info(`SetExecuteCount queueId:: ${queueId} :: count: 1 ::: Result:: ${await redisHandler.SetExecuteCount(queueId, 1)}`);
+                    }
+                }else {
                     logger.info(`SetExecuteCount queueId:: ${queueId} :: count: 1 ::: Result:: ${await redisHandler.SetExecuteCount(queueId, 1)}`);
                 }
 
