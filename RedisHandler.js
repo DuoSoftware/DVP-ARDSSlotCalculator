@@ -107,10 +107,10 @@ client.on("connect", function (err) {
 // );
 
 
-function ScanAsync(pattern) {
+let ScanAsync = (pattern) => {
 
     let matchingKeys = [];
-    let promiseFunc = new Promise(function (resolve, reject) {
+    let promiseFunc = new Promise((resolve, reject) => {
         try {
             let stream = client.scanStream({
                 match: pattern,
@@ -136,7 +136,7 @@ function ScanAsync(pattern) {
 
 }
 
-async function SetExecuteCount(queueId, count) {
+module.exports.SetExecuteCount = async (queueId, count) => {
 
     try {
 
@@ -150,7 +150,7 @@ async function SetExecuteCount(queueId, count) {
 
 }
 
-async function GetAllQueues(tenant, company) {
+module.exports.GetAllQueues = async (tenant, company) => {
     try {
 
         let keyPattern = util.format('Queue:%s:%s:CALLSERVER:CALL:*', company, tenant);
@@ -181,7 +181,7 @@ async function GetAllQueues(tenant, company) {
     }
 }
 
-async function GetAllRegisteredMetaInfo() {
+module.exports.GetAllRegisteredMetaInfo = async () => {
 
     try {
 
@@ -206,8 +206,3 @@ async function GetAllRegisteredMetaInfo() {
     }
 
 }
-
-
-module.exports.SetExecuteCount = SetExecuteCount;
-module.exports.GetAllQueues = GetAllQueues;
-module.exports.GetAllRegisteredMetaInfo = GetAllRegisteredMetaInfo;

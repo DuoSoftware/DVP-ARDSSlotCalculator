@@ -1,7 +1,7 @@
 const redisHandler = require('./RedisHandler');
 const logger = require("dvp-common/LogHandler/CommonLogHandler.js").logger;
 
-async function SetArdsSlotCount() {
+var SetArdsSlotCount = async () => {
     logger.info('++++++++++++++++++++++++ Start SetArdsSlotCount :: Time: ' + new Date().toISOString() + ' ++++++++++++++++++++++++');
 
     try {
