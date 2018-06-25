@@ -11,5 +11,8 @@ module.exports = {
                 "port": "SYS_REDIS_SENTINEL_PORT",
                 "name": "SYS_REDIS_SENTINEL_NAME"
             }
-        }
+        },
+    "Host":{
+        "ExeTimeout":"HOST_EXECUTION_TIMEOUT"
+    }
 };
